@@ -2,6 +2,29 @@ import gradio as gr
 import pickle
 import random
 import numpy as np
+import os
+
+import wget
+from zipfile import ZipFile
+
+
+def download_model(force = False):
+    if force == True: print('downloading model file size is 108 MB so it may take some time to complete...')
+    try:
+        url = "https://huggingface.co/thefcraft/prompt-generator-stable-diffusion/resolve/main/models.pickle.zip"
+        if force == True: 
+            with open("models.pickle.zip", 'w'): pass
+            wget.download(url, "models.pickle.zip") 
+        if not os.path.exists('models.pickle.zip'): wget.download(url, "models.pickle.zip") 
+        print('Download zip file now extracting model')
+        with ZipFile("models.pickle.zip", 'r') as zObject: zObject.extractall()
+        print('extracted model .. now all done')
+        return True
+    except:
+        if force == False: return download_model(force=True)
+        print('Something went wrong\ndownload model via link: `https://huggingface.co/thefcraft/prompt-generator-stable-diffusion/tree/main`')
+
+if not os.path.exists('models.pickle'): download_model()
 
 with open('models.pickle', 'rb')as f:    
     models = pickle.load(f)
