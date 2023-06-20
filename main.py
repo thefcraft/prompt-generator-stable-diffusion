@@ -24,6 +24,8 @@ def download_model(force = False):
         if force == False: return download_model(force=True)
         print('Something went wrong\ndownload model via link: `https://huggingface.co/thefcraft/prompt-generator-stable-diffusion/tree/main`')
 
+try: os.chdir(os.path.abspath(os.path.dirname(__file__)))
+except: pass
 if not os.path.exists('models.pickle'): download_model()
 
 with open('models.pickle', 'rb')as f:    
